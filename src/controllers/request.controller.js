@@ -1,17 +1,26 @@
-import { handleNewRequest } from "../services/request.service.js"
+import { RequestsService } from "../services/request.service.js";
+import { TgService } from "../services/tg.service.js";
 
-async function startRequestService(req,res) {
-    try {
-        const message = req.body
+const RequestsController = {
+    async create(req, res) {
+        try {
+            const savedRequest = await RequestsService.create(req.newRequest)
 
-        const result = await aiService.generateBlog(message)
+            if (!savedRequest) return res.status(500).json({ success: false, message: "Ой халепа, щось пішло не так" })
 
-        if(!result.success) return res.status(500).json({success: false, message: "[request Controller]: Service is not working"})
+            try {
+                const message = `Hello world`
+                await TgService.sendMessage(message)
+            } catch (error) {
+                console.log(`[RequestsController.create] - ${error.message}`)
+            }
 
-        res.status(200).json(result)
-    } catch (error) {
-        res.status(500).json({success: false, message: "[request Controller]: Server error"})
+            return res.status(200).json({ success: true, message: "Заявку успішно надіслано" })
+        } catch (error) {
+            console.log(`[RequestsController.create] - ${error.message}`)
+            res.status(500).json({ success: false, message: "Ой халепа, щось пішло не так" })
+        }
     }
 }
 
-export {startRequestService}
+export { RequestsController }

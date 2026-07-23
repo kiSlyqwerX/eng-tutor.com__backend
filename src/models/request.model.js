@@ -11,13 +11,24 @@ const requestSchema = new Schema({
         require: true
     },
     test: {
-        type: Array
+        type: Array,
+        default: null
     },
     comment: {
-        type: String
+        type: String,
+        default: null
+    },
+    status: {
+        type: String,
+        enum: [
+            "pending",
+            "completed",
+            "denied"
+        ],
+        default: "pending"
     }
 })
 
-const Requests = model("orders", requestSchema)
+const Requests = model("requests", requestSchema)
 
 export {Requests}

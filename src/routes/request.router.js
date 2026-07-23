@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { checkRequest } from "../validators/orders.validator.js";
-import { handleNewRequest } from "../services/request.service.js";
+import { RequestsController } from "../controllers/request.controller.js";
 
 const requestRouter = Router()
 
-requestRouter.post("/request", checkRequest, handleNewRequest)
+requestRouter.post("/request", checkRequest, RequestsController)
 
 export {requestRouter}
