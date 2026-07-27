@@ -9,7 +9,8 @@ const RequestsController = {
             if (!savedRequest) return res.status(500).json({ success: false, message: "Ой халепа, щось пішло не так" })
 
             try {
-                const message = `Hello world`
+                const {name, contact, comment, test} = savedRequest
+                const message = `Нова заявка з сайту:\n\nІмя: ${name}\nКонтакт: ${contact}\nКоментар: ${comment || "Коментар відсутній"}\nТест:${test || "Тест відсутній"}`
                 await TgService.sendMessage(message)
             } catch (error) {
                 console.log(`[RequestsController.create] - ${error.message}`)

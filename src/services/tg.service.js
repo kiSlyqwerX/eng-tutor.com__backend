@@ -1,27 +1,30 @@
 import { tgConfig } from "../config/tg.config.js";
 
-const tgService = {
-    async sendToTelegram(formData) {
+const TgService = {
+    async sendMessage(message) {
         try {
-            const {name, contact, test, comment} = formData
 
 
-             const message = `Нова заявка з сайту:\n\nІмя: ${name}\nКонтакт: ${contact}\nКоментар: ${comment || "Коментар відсутній"}\nТест:${test || "Тест відсутній"}`
-
-             const result = fetch(`https://api.telegram.org/bot${process.env.BOT_TOKEN}/sendMessage`, {
+             const req = await fetch(`https://api.telegram.org/bot${tgConfig.BOT_TOKEN}/sendMessage`, {
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     chat_id: tgConfig.CHAT_ID,
                     text: message
-                })
+                }),
+                method: "POST"
              })
 
-             return "Дані відправлено!"
+             if(!req.ok) return null
+             const res = await req.json()
+
+             return res.result
         } catch (error) {
-            console.log(`[tgService.sendToTelegram]: ${error.message}`)
+            console.log(`[tgService.sendMessage]: ${error.message}`)
             return null
         }
     }
 }
+
+export {TgService}

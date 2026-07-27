@@ -1,9 +1,9 @@
-import {Requests} from "../models/request.model.js"
+import {RequestModel} from "../models/request.model.js"
 
 const Requests = {
     async create(request) {
         try {
-            const newRequest = await Requests.create(request)
+            const newRequest = await RequestModel.create(request)
             return newRequest
         } catch (error) {
             console.log(`[Requests.create]: ${error.message}`)
@@ -12,7 +12,7 @@ const Requests = {
     },
     async getAll() {
         try {
-            const allRequests = await Requests.find()
+            const allRequests = await RequestModel.find()
             return allRequests
         } catch (error) {
             console.log(`[Requests.getAll]: ${error.message}`)
@@ -21,7 +21,7 @@ const Requests = {
     },
     async getById(requestId) {
         try {
-            const request = await Requests.findById(requestId)
+            const request = await RequestModel.findById(requestId)
             return request
         } catch (error) {
             console.log(`[Requests.getById]: ${error.message}`)
@@ -30,7 +30,7 @@ const Requests = {
     },
     async deleteById(requestId) {
         try {
-            const deletedRequest = await Requests.findByIdAndDelete(requestId)
+            const deletedRequest = await RequestModel.findByIdAndDelete(requestId)
             return deletedRequest
         } catch (error) {
             console.log(`[Requests.deleteById]: ${error.message}`)
@@ -39,7 +39,7 @@ const Requests = {
     },
     async changeStatusById(requestId, newStatus) {
         try {
-            const updatedRequest = await Requests.findByIdAndUpdate(requestId,
+            const updatedRequest = await RequestModel.findByIdAndUpdate(requestId,
                 {status: newStatus},
                 {new: true, runValidators: true}
             )
@@ -50,3 +50,5 @@ const Requests = {
         }
     }
 }
+
+export {Requests}

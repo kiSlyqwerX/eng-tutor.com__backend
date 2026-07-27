@@ -4,11 +4,11 @@ const requestSchema = new Schema({
 
     name: {
         type: String,
-        require: true
+        required: true
     },
     contact: {
         type: String,
-        require: true
+        required: true
     },
     test: {
         type: Array,
@@ -29,6 +29,6 @@ const requestSchema = new Schema({
     }
 })
 
-const Requests = model("requests", requestSchema)
+const RequestModel = model("requests", requestSchema)
 
-export {Requests}
+export {RequestModel}
