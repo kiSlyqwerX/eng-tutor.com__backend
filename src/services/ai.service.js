@@ -1,18 +1,12 @@
 import { aiConfig } from "../config/ai.config.js";
 
-const aiService = {
+const AiService = {
 
-    async generateBlog(message) {
+    async generateArticle(theme) {
         try {
-
-
-
-            if(!aiConfig.DEEPSEEK_API_URL || !aiConfig.DEEPSEEK_API_KEY) {
+            if (!aiConfig.DEEPSEEK_API_URL || !aiConfig.DEEPSEEK_API_KEY) {
                 throw new Error("Deepseek key or url is not defined")
             }
-
-
-
 
             const requestBody = {
                 model: aiConfig.models.easy,
@@ -23,7 +17,7 @@ const aiService = {
                     },
                     {
                         role: "user",
-                        content: message
+                        content: typeof theme === "object" ? JSON.stringify(theme) : theme
                     }
                 ],
                 temperature: 0.7,
@@ -39,25 +33,28 @@ const aiService = {
                 body: JSON.stringify(requestBody)
             })
 
-            const data = JSON.stringify(response)
+            const data = await response.json()
 
-            if(!response.ok) {
-                throw new Error (
-                    data?.error.message || `[generateBlog after fetch]: ${response.status}`
+            if (!response.ok) {
+                throw new Error(
+                    data?.error.message || `[generateArticle]: ${response.status}`
                 )
             }
 
 
-            const finalResult = data.choices[0].message.content.trim()
 
+            const finalResult = data?.choices?.[0]?.message?.content?.trim()
 
-            console.log(`[late generateBlog]: ${finalResult}`)
+            if(!finalResult) return `[generateAricle]: DeepSeek returned nothing`
+
+            console.log(`[generateArticle]: ${finalResult}`)
+            return finalResult
         } catch (error) {
-            console.log(`Failed to generate answer: ${error.message}`)
+            console.log(`[generateArticle]: Failed to generate answer - ${error.message}`)
             return { success: false, message: error.message }
         }
     }
 
 }
 
-export {aiService}
+export { AiService }

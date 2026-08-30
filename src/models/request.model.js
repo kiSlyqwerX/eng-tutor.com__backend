@@ -27,6 +27,8 @@ const requestSchema = new Schema({
         ],
         default: "pending"
     }
+}, {
+    timestamps: true
 })
 
 const RequestModel = model("requests", requestSchema)
